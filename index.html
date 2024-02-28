@@ -35,6 +35,8 @@
         </button>
       </section>
 
+      <!-- no found massage -->
+
       <!-- search result -->
       <section>
         <!-- loader -->
@@ -42,10 +44,15 @@
           <span class="loading loading-spinner loading-lg"></span>
         </div>
 
+        <!-- phone container -->
         <div
           id="phoneContainer"
           class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         ></div>
+
+        <div class="hidden text-center mt-8 text-red-500">
+          <p id="noFoundMessage">No phone found. Please search again.</p>
+        </div>
         <!-- show all -->
         <div
           onclick="handleShowAll()"

@@ -1,22 +1,24 @@
 const loadPhone = async (searchText, isShowAll) => {
-  const res = await fetch(
-    `https://openapi.programming-hero.com/api/phones?search=${searchText}`
-  );
+  const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`
+  const res = await fetch(url);
   const data = await res.json();
-  if (data.status === false) {
-    document.getElementById("phoneContainer").innerText = "Phone not found. Please search again"
-  }
-
   const phones = data.data;
   displayPhones(phones, isShowAll);
 };
 
 const displayPhones = (phones, isShowAll) => {
+  const noFoundMessage = document.getElementById('noFoundMessage');
+  console.log(noFoundMessage);
+  if (phones.length === 0) {
+    noFoundMessage.parentElement.classList.remove('hidden');
+  }
+
   // get ref of container div
   const phoneContainer = document.getElementById("phoneContainer");
-  const showAll = document.getElementById('showAll')
   // clear container
   phoneContainer.textContent = "";
+
+  const showAll = document.getElementById('showAll')
 
   if (phones.length > 9 && !isShowAll) {
     showAll.classList.remove('hidden');
@@ -24,12 +26,13 @@ const displayPhones = (phones, isShowAll) => {
     showAll.classList.add('hidden');
   }
 
+  // display 10 phone only
   if (!isShowAll) {
     phones = phones.slice(0,9);
   }
   
+  // display phones
   phones.forEach((phone) => {
-    // 2. create a div
     const phoneCard = document.createElement("div");
     phoneCard.classList = `card bg-gray-50 border`;
     // 3. set inner HTML
@@ -47,10 +50,11 @@ const displayPhones = (phones, isShowAll) => {
     // append child
     phoneContainer.appendChild(phoneCard);
   });
+  // stop loading spinner
   toggleLoadingSpinner(false);
 };
 
-// handle search button
+// handle search button click
 const handleSearch = (isShowAll) => {
   toggleLoadingSpinner(true);
   const searchField = document.getElementById("searchField");
